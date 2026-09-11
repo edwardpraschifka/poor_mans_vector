@@ -3,7 +3,11 @@
 
 TEST_CASE("Vector constructs with correct size") {
     Vector v(5);
+    Vector w;
+    Vector x(10);
     REQUIRE(v.size() == 5);
+    REQUIRE(w.size() == 0);
+    REQUIRE(x.size() == 10);
 }
 
 TEST_CASE("Vector elements are initialized to zero") {

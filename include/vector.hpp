@@ -7,8 +7,12 @@ class Vector {
 
     public:
         Vector(int size);
+        Vector();
+        
         ~Vector();
+
         double operator[](int i) const;
         double& operator[](int i);
+        
         int size() const;
 };
