@@ -6,13 +6,13 @@ class Vector {
         double* contents_;
 
     public:
-        Vector(int size);
         Vector();
-        
+        Vector(int size);
+        Vector(const Vector& other);
         ~Vector();
 
         double operator[](int i) const;
         double& operator[](int i);
-        
+
         int size() const;
 };

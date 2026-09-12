@@ -31,3 +31,18 @@ TEST_CASE("Can assign new values to non-const vector") {
         REQUIRE(v[i] == i+1);
     }
 }
+
+TEST_CASE("Can construct a new vector using copy constructor") {
+    Vector v(3);
+    int sz = v.size();
+
+    for (int i = 0; i < sz; ++i){
+        v[i] = i+1;
+    }
+
+    Vector w = Vector(v);
+
+    for (int i = 0; i < sz; ++i){
+        REQUIRE(w[i] == i+1);
+    }
+}
