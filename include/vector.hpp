@@ -13,6 +13,7 @@ class Vector {
         ~Vector();
 
         Vector& operator=(const Vector& other);
+        Vector& operator=(Vector&& other) noexcept;
         
         double operator[](int i) const;
         double& operator[](int i);

@@ -37,6 +37,19 @@ Vector& Vector::operator=(const Vector& other) {
     return *this;
 }
 
+Vector& Vector::operator=(Vector&& other) noexcept {
+    if (this==&other) {
+        return *this;
+    }
+
+    delete[] contents_;
+    contents_ = other.contents_;
+    size_ = other.size_;
+    other.contents_ = nullptr;
+    other.size_ = 0;
+    return *this;
+}
+
 double Vector::operator[](int i) const {return contents_[i];}
 
 double& Vector::operator[](int i) {return contents_[i];}

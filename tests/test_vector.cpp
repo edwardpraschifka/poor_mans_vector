@@ -88,9 +88,46 @@ TEST_CASE("Can construct a new vector using move constructor") {
 
     Vector w = std::move(v);
 
+    REQUIRE(v.size() == 0);
+    REQUIRE(w.size() == sz);
+
     for (int i = 0; i < sz; ++i){
         REQUIRE(w[i] == i+1);
     }
+}
+
+TEST_CASE("Can assign one vector to another using move assignment operator") {
+    Vector v(3);
+    Vector w(5);
+    int sz = v.size();
+
+    for (int i = 0; i < sz; ++i){
+        v[i] = i+1;
+    }
+
+    w = std::move(v);
 
     REQUIRE(v.size() == 0);
+    REQUIRE(w.size() == sz);
+
+    for (int i = 0; i < sz; ++i){
+        REQUIRE(w[i] == i+1);
+    }
+}
+
+TEST_CASE("Can assign a vector to itself using move assignment operator") {
+    Vector v(3);
+    int sz = v.size();
+
+    for (int i = 0; i < sz; ++i){
+        v[i] = i+1;
+    }
+
+    v = std::move(v);
+
+    REQUIRE(v.size() == sz);
+
+    for (int i = 0; i < sz; ++i){
+        REQUIRE(v[i] == i+1);
+    }
 }
