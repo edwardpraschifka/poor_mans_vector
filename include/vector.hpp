@@ -9,6 +9,7 @@ class Vector {
         Vector();
         Vector(int size);
         Vector(const Vector& other);
+        Vector(Vector&& other) noexcept;
         ~Vector();
 
         Vector& operator=(const Vector& other);
@@ -17,4 +18,5 @@ class Vector {
         double& operator[](int i);
 
         int size() const;
+        
 };

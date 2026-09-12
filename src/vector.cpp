@@ -7,10 +7,16 @@ Vector::Vector(int size): size_{size}, contents_{new double[size]} {
 }
 
 Vector::Vector(const Vector& other): size_{other.size_}, 
-                            contents_{new double[other.size_]} {
+                                     contents_{new double[other.size_]} {
     for (int i = 0; i < other.size_; ++i) {
         contents_[i] = other.contents_[i];
     }
+}
+
+Vector::Vector(Vector&& other) noexcept: size_{other.size_}, 
+                                contents_{other.contents_} {
+    other.contents_ = nullptr;
+    other.size_ = 0;
 }
 
 Vector::~Vector() {delete[] contents_;}
