@@ -11,6 +11,8 @@ class Vector {
         Vector(const Vector& other);
         ~Vector();
 
+        Vector& operator=(const Vector& other);
+        
         double operator[](int i) const;
         double& operator[](int i);
 
