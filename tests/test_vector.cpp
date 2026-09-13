@@ -1,5 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 #include "vector.hpp"
+#include <iostream>
 
 TEST_CASE("Vector constructs with correct size") {
     Vector v(5);
@@ -130,4 +131,30 @@ TEST_CASE("Can assign a vector to itself using move assignment operator") {
     for (int i = 0; i < sz; ++i){
         REQUIRE(v[i] == i+1);
     }
+}
+
+TEST_CASE("Can add two vectors") {
+    Vector v(5);
+    Vector w(5);
+    Vector res;
+    int sz = v.size();
+
+    for (int i = 0; i < sz; ++i){
+        v[i] = i+1;
+        w[i] = i*i;
+    }
+
+    res = v + w;
+
+    REQUIRE(res.size() == sz);
+
+    for (int i = 0; i < sz; ++i){
+        REQUIRE(res[i] == (i+1) + (i*i));
+    }
+}
+
+TEST_CASE("Try to add two vectors of different length") {
+    Vector v(5);
+    Vector w(3);
+    REQUIRE_THROWS_AS(v + w, std::invalid_argument);
 }

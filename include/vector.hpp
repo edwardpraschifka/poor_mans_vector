@@ -18,6 +18,8 @@ class Vector {
         double operator[](int i) const;
         double& operator[](int i);
 
+        Vector operator+(const Vector& other) const;
+
         int size() const;
         
 };

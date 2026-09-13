@@ -1,4 +1,7 @@
+#include <stdexcept>
+#include <string>
 #include "vector.hpp"
+
 
 Vector::Vector(): size_{0}, contents_{new double[0]} {};
 
@@ -51,7 +54,23 @@ Vector& Vector::operator=(Vector&& other) noexcept {
 }
 
 double Vector::operator[](int i) const {return contents_[i];}
-
 double& Vector::operator[](int i) {return contents_[i];}
+
+Vector Vector::operator+(const Vector& other) const {
+    if (size_ != other.size()) {
+        throw std::invalid_argument(
+            "Vector length mismatch: argument 0 has length " + std::to_string(size_)
+            + ", but argument 1 has length " + std::to_string(other.size())
+        );
+    }
+
+    Vector res = Vector(size_);
+
+    for (int i = 0; i < other.size_; ++i) {
+        res[i] = contents_[i] + other.contents_[i];
+    }
+
+    return res;
+}
 
 int Vector::size() const {return size_;}
