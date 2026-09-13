@@ -15,11 +15,11 @@ class Vector {
         Vector& operator=(const Vector& other);
         Vector& operator=(Vector&& other) noexcept;
         
-        double operator[](int i) const;
-        double& operator[](int i);
+        double operator[](int i) const noexcept;
+        double& operator[](int i) noexcept;
 
         Vector operator+(const Vector& other) const;
 
-        int size() const;
+        int size() const noexcept;
         
 };

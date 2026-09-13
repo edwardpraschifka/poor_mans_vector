@@ -53,8 +53,8 @@ Vector& Vector::operator=(Vector&& other) noexcept {
     return *this;
 }
 
-double Vector::operator[](int i) const {return contents_[i];}
-double& Vector::operator[](int i) {return contents_[i];}
+double Vector::operator[](int i) const noexcept {return contents_[i];}
+double& Vector::operator[](int i) noexcept {return contents_[i];}
 
 Vector Vector::operator+(const Vector& other) const {
     if (size_ != other.size()) {
@@ -73,4 +73,4 @@ Vector Vector::operator+(const Vector& other) const {
     return res;
 }
 
-int Vector::size() const {return size_;}
+int Vector::size() const noexcept {return size_;}
