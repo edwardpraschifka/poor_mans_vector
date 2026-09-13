@@ -21,5 +21,7 @@ class Vector {
         Vector operator+(const Vector& other) const;
 
         int size() const noexcept;
+        double& at(int i);
+        double at(int i) const;
         
 };

@@ -158,3 +158,38 @@ TEST_CASE("Try to add two vectors of different length") {
     Vector w(3);
     REQUIRE_THROWS_AS(v + w, std::invalid_argument);
 }
+
+TEST_CASE("Try using at() method to read a const vector") {
+    Vector v = Vector(5);
+    int sz = v.size();
+
+    for (int i = 0; i < sz; ++i){
+        v[i] = (i+1)*2;
+    }
+
+    const Vector w(v);
+
+    REQUIRE(w.at(0) == 2);
+    REQUIRE(w.at(1) == 4);
+    REQUIRE(w.at(2) == 6);
+}
+
+TEST_CASE("Try using at() method to write & read to a non-const vector") {
+    Vector v(5);
+    int sz = v.size();
+
+    for (int i = 0; i < sz; ++i){
+        v.at(i) = (i+1)*2;
+    }
+
+    REQUIRE(v.at(0) == 2);
+    REQUIRE(v.at(1) == 4);
+    REQUIRE(v.at(2) == 6);
+}
+
+TEST_CASE("Try using at() method with out-of-bounds indices") {
+    Vector v(5);
+    REQUIRE_THROWS_AS(v.at(-1), std::out_of_range);
+    REQUIRE_THROWS_AS(v.at(5), std::out_of_range);
+    REQUIRE_THROWS_AS(v.at(100), std::out_of_range);
+}

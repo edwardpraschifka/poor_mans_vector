@@ -74,3 +74,18 @@ Vector Vector::operator+(const Vector& other) const {
 }
 
 int Vector::size() const noexcept {return size_;}
+
+double& Vector::at(int i) {
+    if ((i < 0) || (i >= size_)) {
+        throw std::out_of_range(
+            "Invalid index: tried to access index " + std::to_string(i)
+            + " (valid indices are between 0 and " + std::to_string(size_ - 1) + ")"
+        );
+    }
+
+    return contents_[i];
+}
+
+double Vector::at(int i) const {    
+    return const_cast<Vector*>(this)->at(i);
+}
