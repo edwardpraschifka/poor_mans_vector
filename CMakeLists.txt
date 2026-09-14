@@ -10,14 +10,14 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(Catch2)
 
-add_executable(tests tests/test_vector.cpp)
-target_link_libraries(tests PRIVATE vector Catch2::Catch2WithMain)
+option(ENABLE_ASAN "Build with AddressSanitizer" ON)
 
-add_library(vector src/vector.cpp)
-target_include_directories(vector PUBLIC include)
+add_executable(tests tests/test_vector.cpp)
+target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
+target_include_directories(tests PUBLIC include)
 
 add_executable(main main.cpp)
-target_link_libraries(main vector)
+target_include_directories(main PUBLIC include)
 
-target_compile_options(vector PUBLIC -fsanitize=address -g)
-target_link_options(vector PUBLIC -fsanitize=address)
+target_compile_options(tests PUBLIC -fsanitize=address -g)
+target_link_options(tests PUBLIC -fsanitize=address)

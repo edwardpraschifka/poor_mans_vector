@@ -1,109 +1,117 @@
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_template_test_macros.hpp>
 #include "vector.hpp"
-#include <iostream>
 
-TEST_CASE("Vector constructs with correct size") {
-    Vector v(5);
-    Vector w;
-    Vector x(10);
+float foo(float i) {
+    return (i*i) + 7;
+}
+
+float bar(float i) {
+    return (i - 1) * 4;
+}
+
+TEMPLATE_TEST_CASE("Vector constructs with correct size", "[vector]", int, float) {
+    Vector<TestType> v(5);
+    Vector<TestType> w;
+    Vector<TestType> x(10);
     REQUIRE(v.size() == 5);
     REQUIRE(w.size() == 0);
     REQUIRE(x.size() == 10);
 }
 
-TEST_CASE("Vector elements are initialized to zero") {
-    const Vector v(10);
+TEMPLATE_TEST_CASE("Vector elements are initialized to T's default value", "[vector]", int, float) {
+    const Vector<TestType> v(10);
     int sz = v.size();
     
     for (int i = 0; i < sz; ++i){
-        REQUIRE(v[i] == 0);
+        REQUIRE(v[i] == TestType{});
     }
 }
 
-TEST_CASE("Can assign new values to non-const vector") {
-    Vector v(3);
+TEMPLATE_TEST_CASE("Can assign new values to non-const Vector", "[vector]", int, float) {
+    Vector<TestType> v(3);
     int sz = v.size();
     
     for (int i = 0; i < sz; ++i){
-        v[i] = i+1;
+        v[i] = foo(i);
     }
 
     for (int i = 0; i < sz; ++i){
-        REQUIRE(v[i] == i+1);
-    }
-}
-
-TEST_CASE("Can construct a new vector using copy constructor") {
-    Vector v(3);
-    int sz = v.size();
-
-    for (int i = 0; i < sz; ++i){
-        v[i] = i+1;
-    }
-
-    Vector w = Vector(v);
-
-    for (int i = 0; i < sz; ++i){
-        REQUIRE(w[i] == i+1);
+        REQUIRE(v[i] == foo(i));
     }
 }
 
-TEST_CASE("Can assign one vector to another using copy assignment operator") {
-    Vector v(3);
-    Vector w(5);
+TEMPLATE_TEST_CASE("Can construct a new Vector using copy constructor", "[vector]", int, float) {
+    Vector<TestType> v(3);
     int sz = v.size();
 
     for (int i = 0; i < sz; ++i){
-        v[i] = i+1;
+        v[i] = foo(i);
+    }
+
+    Vector<TestType> w = Vector<TestType>(v);
+
+    for (int i = 0; i < sz; ++i){
+        REQUIRE(w[i] == foo(i));
+    }
+}
+
+TEMPLATE_TEST_CASE("Can assign one Vector to another using copy assignment operator", "[vector]", int, float) {
+    Vector<TestType> v(3);
+    Vector<TestType> w(5);
+    int sz = v.size();
+
+    for (int i = 0; i < sz; ++i){
+        v[i] = foo(i);
     }
 
     w = v;
 
     for (int i = 0; i < sz; ++i){
-        REQUIRE(w[i] == i+1);
+        REQUIRE(w[i] == foo(i));
     }
 }
 
-TEST_CASE("Can assign a vector to itself using copy assignment operator") {
-    Vector v(3);
+TEMPLATE_TEST_CASE("Can assign a Vector to itself using copy assignment operator", "[vector]", int, float) {
+    Vector<TestType> v(3);
     int sz = v.size();
 
     for (int i = 0; i < sz; ++i){
-        v[i] = i+1;
+        v[i] = foo(i);
     }
 
     v = v;
 
     for (int i = 0; i < sz; ++i){
-        REQUIRE(v[i] == i+1);
+        REQUIRE(v[i] == foo(i));
     }
 }
 
-TEST_CASE("Can construct a new vector using move constructor") {
-    Vector v(3);
+TEMPLATE_TEST_CASE("Can construct a new Vector using move constructor", "[vector]", int, float) {
+    Vector<TestType> v(3);
     int sz = v.size();
 
     for (int i = 0; i < sz; ++i){
-        v[i] = i+1;
+        v[i] = foo(i);
     }
 
-    Vector w = std::move(v);
+    Vector<TestType> w = std::move(v);
 
     REQUIRE(v.size() == 0);
     REQUIRE(w.size() == sz);
 
     for (int i = 0; i < sz; ++i){
-        REQUIRE(w[i] == i+1);
+        REQUIRE(w[i] == foo(i));
     }
 }
 
-TEST_CASE("Can assign one vector to another using move assignment operator") {
-    Vector v(3);
-    Vector w(5);
+TEMPLATE_TEST_CASE("Can assign one Vector to another using move assignment operator", "[vector]", int, float) {
+    Vector<TestType> v(3);
+    Vector<TestType> w(5);
     int sz = v.size();
 
     for (int i = 0; i < sz; ++i){
-        v[i] = i+1;
+        v[i] = foo(i);
     }
 
     w = std::move(v);
@@ -112,16 +120,16 @@ TEST_CASE("Can assign one vector to another using move assignment operator") {
     REQUIRE(w.size() == sz);
 
     for (int i = 0; i < sz; ++i){
-        REQUIRE(w[i] == i+1);
+        REQUIRE(w[i] == foo(i));
     }
 }
 
-TEST_CASE("Can assign a vector to itself using move assignment operator") {
-    Vector v(3);
+TEMPLATE_TEST_CASE("Can assign a Vector  to itself using move assignment operator", "[vector]", int, float) {
+    Vector<TestType> v(3);
     int sz = v.size();
 
     for (int i = 0; i < sz; ++i){
-        v[i] = i+1;
+        v[i] = foo(i);
     }
 
     v = std::move(v);
@@ -129,19 +137,19 @@ TEST_CASE("Can assign a vector to itself using move assignment operator") {
     REQUIRE(v.size() == sz);
 
     for (int i = 0; i < sz; ++i){
-        REQUIRE(v[i] == i+1);
+        REQUIRE(v[i] == foo(i));
     }
 }
 
-TEST_CASE("Can add two vectors") {
-    Vector v(5);
-    Vector w(5);
-    Vector res;
+TEMPLATE_TEST_CASE("Can add two Vectors", "[vector]", int, float) {
+    Vector<TestType> v(5);
+    Vector<TestType> w(5);
+    Vector<TestType> res;
     int sz = v.size();
 
     for (int i = 0; i < sz; ++i){
-        v[i] = i+1;
-        w[i] = i*i;
+        v[i] = foo(i);
+        w[i] = bar(i);
     }
 
     res = v + w;
@@ -149,46 +157,46 @@ TEST_CASE("Can add two vectors") {
     REQUIRE(res.size() == sz);
 
     for (int i = 0; i < sz; ++i){
-        REQUIRE(res[i] == (i+1) + (i*i));
+        REQUIRE(res[i] == foo(i) + bar(i));
     }
 }
 
-TEST_CASE("Try to add two vectors of different length") {
-    Vector v(5);
-    Vector w(3);
+TEMPLATE_TEST_CASE("Try to add two Vectors of different length", "[vector]", int, float) {
+    Vector<TestType> v(5);
+    Vector<TestType> w(3);
     REQUIRE_THROWS_AS(v + w, std::invalid_argument);
 }
 
-TEST_CASE("Try using at() method to read a const vector") {
-    Vector v = Vector(5);
+TEMPLATE_TEST_CASE("Try using at() method to read a const Vector", "[vector]", int, float) {
+    Vector<TestType> v = Vector<TestType>(5);
     int sz = v.size();
 
     for (int i = 0; i < sz; ++i){
-        v[i] = (i+1)*2;
+        v[i] = foo(i);
     }
 
-    const Vector w(v);
+    const Vector<TestType> w(v);
 
-    REQUIRE(w.at(0) == 2);
-    REQUIRE(w.at(1) == 4);
-    REQUIRE(w.at(2) == 6);
+    for (int i = 0; i < sz; ++i){
+        REQUIRE(w[i] == foo(i));
+    }
 }
 
-TEST_CASE("Try using at() method to write & read to a non-const vector") {
-    Vector v(5);
+TEMPLATE_TEST_CASE("Try using at() method to write & read to a non-const Vector", "[vector]", int, float) {
+    Vector<TestType> v(5);
     int sz = v.size();
 
     for (int i = 0; i < sz; ++i){
-        v.at(i) = (i+1)*2;
+        v.at(i) = foo(i);
     }
 
-    REQUIRE(v.at(0) == 2);
-    REQUIRE(v.at(1) == 4);
-    REQUIRE(v.at(2) == 6);
+    for (int i = 0; i < sz; ++i){
+        REQUIRE(v[i] == foo(i));
+    }
 }
 
-TEST_CASE("Try using at() method with out-of-bounds indices") {
-    Vector v(5);
+TEMPLATE_TEST_CASE("Try using at() method with out-of-bounds indices", "[vector]", int, float) {
+    Vector<TestType> v(5);
     REQUIRE_THROWS_AS(v.at(-1), std::out_of_range);
     REQUIRE_THROWS_AS(v.at(5), std::out_of_range);
     REQUIRE_THROWS_AS(v.at(100), std::out_of_range);
