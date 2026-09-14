@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/catch_template_test_macros.hpp>
 #include "vector.hpp"
@@ -200,4 +201,17 @@ TEMPLATE_TEST_CASE("Try using at() method with out-of-bounds indices", "[vector]
     REQUIRE_THROWS_AS(v.at(-1), std::out_of_range);
     REQUIRE_THROWS_AS(v.at(5), std::out_of_range);
     REQUIRE_THROWS_AS(v.at(100), std::out_of_range);
+}
+
+TEMPLATE_TEST_CASE("Try begin() and end() methods", "[vector]", int, float) {
+    Vector<TestType> v(5);
+    int sz = v.size();
+
+    for (int i = 0; i < sz; ++i) {
+        v[i] = foo(i);
+    }
+
+    for (auto itr = v.begin(); itr != v.end(); ++itr) {
+        REQUIRE(*itr == foo(itr - v.begin()));
+    }    
 }

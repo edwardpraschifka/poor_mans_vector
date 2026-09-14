@@ -1,6 +1,7 @@
 #include <cstdint>
 #include <stdexcept>
 #include <string>
+#include "iterator.hpp"
 
 template <typename T>
 class Vector {
@@ -9,23 +10,32 @@ class Vector {
         T* contents_;
 
     public:
+        // constructors, destructors
         Vector();
         Vector(int size);
         Vector(const Vector& other);
         Vector(Vector&& other) noexcept;
         ~Vector();
 
+        // assignment
         Vector& operator=(const Vector& other);
         Vector& operator=(Vector&& other) noexcept;
-        
+
+        // indexing
         T operator[](int i) const noexcept;
         T& operator[](int i) noexcept;
-
-        Vector operator+(const Vector& other) const;
-
-        int size() const noexcept;
         T& at(int i);
         T at(int i) const;
+
+        // addition
+        Vector operator+(const Vector& other) const;
+        
+        // iterators
+        Iterator<T> begin() const;
+        Iterator<T> end() const;
+
+        // getters
+        int size() const noexcept;
         
 };
 
@@ -93,6 +103,23 @@ template <typename T>
 T& Vector<T>::operator[](int i) noexcept {return contents_[i];}
 
 template <typename T>
+T& Vector<T>::at(int i) {
+    if ((i < 0) || (i >= size_)) {
+        throw std::out_of_range(
+            "Invalid index: tried to access index " + std::to_string(i)
+            + " (valid indices are between 0 and " + std::to_string(size_ - 1) + ")"
+        );
+    }
+
+    return contents_[i];
+}
+
+template <typename T>
+T Vector<T>::at(int i) const {    
+    return const_cast<Vector*>(this)->at(i);
+}
+
+template <typename T>
 Vector<T> Vector<T>::operator+(const Vector& other) const {
     if (size_ != other.size()) {
         throw std::invalid_argument(
@@ -111,21 +138,14 @@ Vector<T> Vector<T>::operator+(const Vector& other) const {
 }
 
 template <typename T>
+Iterator<T> Vector<T>::begin() const {
+    return Iterator<T>(contents_);
+}
+
+template <typename T>
+Iterator<T> Vector<T>::end() const {
+    return Iterator<T>(contents_ + size_);
+}
+
+template <typename T>
 int Vector<T>::size() const noexcept {return size_;}
-
-template <typename T>
-T& Vector<T>::at(int i) {
-    if ((i < 0) || (i >= size_)) {
-        throw std::out_of_range(
-            "Invalid index: tried to access index " + std::to_string(i)
-            + " (valid indices are between 0 and " + std::to_string(size_ - 1) + ")"
-        );
-    }
-
-    return contents_[i];
-}
-
-template <typename T>
-T Vector<T>::at(int i) const {    
-    return const_cast<Vector*>(this)->at(i);
-}
