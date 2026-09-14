@@ -94,8 +94,10 @@ cmake --build build
 Tests are written with [Catch2](https://github.com/catchorg/Catch2) (fetched automatically via CMake's `FetchContent`) and cover construction, zero-initialization, copy/move semantics (including self-assignment for both), `operator+`, and `.at()` bounds checking — using `TEMPLATE_TEST_CASE` to run each test across `int` and `float`.
 
 ```bash
-cd build
-ctest
+cd tiny-vector
+cmake -B build
+cmake --build build
+build/tests
 ```
 
 The build is compiled with `-fsanitize=address` to catch memory errors (double-frees, use-after-free, out-of-bounds access) at the point they occur, rather than relying on tests happening to observe incorrect output.
